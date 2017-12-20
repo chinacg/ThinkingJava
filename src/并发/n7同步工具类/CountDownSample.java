@@ -5,7 +5,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * 闭锁的使用例子
  */
-public class countDownSample {
+public class CountDownSample {
     public long timeTasks(int nThreads, final Runnable task) throws InterruptedException {
         final CountDownLatch startGate = new CountDownLatch(1); // 开市门设置为1
         final CountDownLatch endGate = new CountDownLatch(nThreads);// 结束门设置为线程的总数
