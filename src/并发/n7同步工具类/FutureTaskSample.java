@@ -5,7 +5,7 @@ import java.util.concurrent.FutureTask;
 
 public class FutureTaskSample {
     private final FutureTask<ProductInfo> futureTask =
-            new FutureTask<>(() -> ProductInfo.loadProductInfo());
+            new FutureTask<>(ProductInfo::loadProductInfo);
 
     private final Thread thread = new Thread(futureTask);
 
