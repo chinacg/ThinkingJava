@@ -3,6 +3,8 @@ package 并发.n7同步工具类;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+import static 并发.utils.LaunderThrowable.launderThrowable;
+
 public class FutureTaskSample {
     private final FutureTask<ProductInfo> futureTask =
             new FutureTask<>(ProductInfo::loadProductInfo);
@@ -18,18 +20,11 @@ public class FutureTaskSample {
             return futureTask.get();
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
-            throw landerThrowable(cause);
+            throw launderThrowable(cause);
         }
     }
 
-    public static RuntimeException landerThrowable(Throwable throwable) {
-        if (throwable instanceof RuntimeException)
-            return (RuntimeException) throwable;
-        else if (throwable instanceof Error)
-            throw (Error) throwable;
-        else
-            throw new IllegalStateException("Not unchecked", throwable);
-    }
+
 
     public static class ProductInfo {
         public static ProductInfo loadProductInfo() {

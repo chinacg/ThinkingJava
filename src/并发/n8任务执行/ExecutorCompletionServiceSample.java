@@ -39,7 +39,7 @@ public class ExecutorCompletionServiceSample {
         }catch (InterruptedException e){
             Thread.currentThread().interrupt();
         }catch (ExecutionException e){
-            throw FutureTaskSample.landerThrowable(e.getCause());
+            throw FutureTaskSample.launderThrowable(e.getCause());
         }
     }
 
