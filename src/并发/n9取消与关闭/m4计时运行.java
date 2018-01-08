@@ -31,6 +31,9 @@ public class m4计时运行 {
      * 后，它将检查任务中是否有异常抛出，如果有的话，则会在调用timeRun 的线程中再次抛出该
      * 异常。由于Throwable 将在两个线程之间共享，因此该变量被声明为volatile类型，从而确保
      * 安全地将其从任务线程发布到timeRun线程。
+     *
+     * 这个示例解决了前面示例中的问题，但由于它依赖于一个限时的join,因此存在着join的不足：
+     * 无法知道执行控制是因为线程正常退出而返回还是因为join超时而返回。
      */
     public static class specailInterrupt {
         private static final ScheduledExecutorService cancelExec = Executors.newScheduledThreadPool(5);
