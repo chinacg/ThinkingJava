@@ -5,6 +5,8 @@ import 并发.n7同步工具类.FutureTaskSample;
 import java.util.List;
 import java.util.concurrent.*;
 
+import static 并发.utils.LaunderThrowable.launderThrowable;
+
 /**
  * CompletionService 将Executor 和BlockingQueue 的功能融合在一起。你可以将
  * Callable任务交给它来执行，然后使用类似于队列操作的take和poll等方法来获得已完成的结果，
@@ -39,7 +41,7 @@ public class ExecutorCompletionServiceSample {
         }catch (InterruptedException e){
             Thread.currentThread().interrupt();
         }catch (ExecutionException e){
-            throw FutureTaskSample.launderThrowable(e.getCause());
+            throw launderThrowable(e.getCause());
         }
     }
 

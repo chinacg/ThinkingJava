@@ -30,7 +30,7 @@ public class m2CancellationInterupted {
                 BigInteger p = BigInteger.ONE;
                 while (!Thread.currentThread().isInterrupted())
                     queue.put(p = p.nextProbablePrime());
-            } catch (InterruptedException e) {
+            } catch (InterruptedException e) {//响应中断
               /* 允许线程退出 */
             }
         }
