@@ -1,6 +1,10 @@
 package 并发.n9取消与关闭;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+
 /**
  * java库中，许多可阻塞方法都是通过提前返回或者抛出InterruptedException来响应
  * 中断请求的，这样容易构建出能响应取消请求的任务。然而，并非所有的可阻塞方法
@@ -26,6 +30,45 @@ package 并发.n9取消与关闭;
  * 锁的同时仍能响应中断。
  */
 public class m6处理不可中断阻塞 {
+    /**
+     * ReaderThread 给出了如果封装非标准的取消操作。ReaderThread管理了一个套接字链接，
+     * 它采取同步的方式从该套接字中读取数据，并将接收到的数据传给processsBuffer。为了结束
+     * 某个用户的连接或者关闭服务器，ReaderThread改写了interrupt方法，使其技能处理标准的
+     * 中断，也能关闭底层的套接字。因此无论ReaderThread线程是在read方法中阻塞还是在某个
+     * 可中断的阻塞方法中阻塞，都可以被中断并停止执行当前的工作。
+     */
+    public static class ReaderThread extends Thread{
+        private final Socket socket;
+        private final InputStream in;
 
+        public ReaderThread(Socket socket) throws IOException{
+            this.socket = socket;
+            this.in = socket.getInputStream();
+        }
+        @Override
+        public void run() {
+         try {
+             byte[] buf = new byte[1024];
+             while (true){
+                 int count = in.read(buf);
+                 if(count<0)
+                     break;
+                 else if(count>0) {
+                     //processBuffer(buf,count);
+                 }
+             }
+         }catch (IOException e){/*允许线程退出*/}
+        }
+
+        @Override
+        public void interrupt() {
+            try {
+                 socket.close();
+            }catch (IOException ignored){}
+            finally {
+                super.interrupt();
+            }
+        }
+    }
 
 }
